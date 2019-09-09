@@ -14,11 +14,11 @@
 // - weeds eat plants that are  in proximity when level delta is high enough
 // - garden dimensions grow after x days have passed successfully
 
-import Plant from './plant.js';
-import Weed from './weed.js';
-import Basket from './basket.js';
-import Store from './store.js';
-import Garden from './garden.js';
+import {Plant} from './plant.js';
+import {Weed} from './weed.js';
+import {Basket} from './basket.js';
+import {Store} from './store.js';
+import {Garden} from './garden.js';
 
 export class Game {
   constructor(x, y) {
@@ -55,9 +55,9 @@ export class Game {
     const flora = this.gardenObj.garden[x][y];
     if (flora.type === 'plant' && flora.maturity === 4) {
       this.basket.addPlants(flora);
-      removeFlora(x, y);
+      this.gardenObj.removeFlora(x, y);
     }else if (flora.type === 'plant'){
-      removeFlora(x, y);
+      this.gardenObj.removeFlora(x, y);
     }
   }
 

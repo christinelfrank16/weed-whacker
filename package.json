@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode development",
+    "start": "npm run build && webpack-dev-server --open --mode development",
+    "lint": "eslint src/*.js",
+    "test": "karma start karma.conf.js"
   },
   "keywords": [],
   "author": "",

@@ -1,10 +1,10 @@
-import Flora from './flora.js';
+import {Flora} from './flora.js';
 
 export class Weed extends Flora {
   constructor(name, level, bestTools){
     super(name, level, 'weed');
-    this.spreadRate = setSpreadRate();
-    this.proximityRating = setProximityRating();
+    this.spreadRate = this.setSpreadRate();
+    this.proximityRating = this.setProximityRating();
     this.bestTools = bestTools;
   }
 

@@ -4,7 +4,7 @@ export class Flora {
     this.level = level;
     this.type = type;
     this.maturity = 1;
-    this.growTime = setGrowTime();
+    this.growTime = this.setGrowTime();
   }
 
   grow(){

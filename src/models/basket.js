@@ -14,7 +14,7 @@ export class Basket {
   addTool(tool, price) {
     if (price <= this.gold) {
       this.tools.push(tool);
-      exchangeGold(-price);
+      this.exchangeGold(-price);
     }
   }
 
@@ -26,10 +26,10 @@ export class Basket {
     if (price * qty <= this.gold) {
       if (this.seeds[seedName]) {
         this.seeds[seedName] += qty;
-        exchangeGold(-(price * qty));
+        this.exchangeGold(-(price * qty));
       } else {
         this.seeds[seedName] = qty;
-        exchangeGold(-(price * qty));
+        this.exchangeGold(-(price * qty));
       }
     }
   }
@@ -42,13 +42,13 @@ export class Basket {
     const plantsToDry = this.maturePlants.filter(plant => {
       return plant.name === plantName
     });
-    let sortedPlantsToDry = plantsToSell.sort((a, b) => {
+    let sortedPlantsToDry = plantsToDry.sort((a, b) => {
       (a.level > b.level) ? 1: ((a.level < b.level) ? -1 : 0)
     });
     if (qty < sortedPlantsToDry.length) {
       const seedPlants = sortedPlantsToDry.slice(0, qty);
       seedPlants.forEach(function(plant) {
-        seedsGathered += plant.seedQty);
+        seedsGathered += plant.seedQty;
       });
       const leftoverPlants = sortedPlantsToDry.slice(qty);
       leftoverPlants.forEach(function(plant) {
@@ -57,10 +57,10 @@ export class Basket {
       this.maturePlants = newMaturePlants;
       this.addSeeds(plantName, 0, seedsGathered);
 
-    } else if (qty === sortedPlantsToSell.length) {
+    } else if (qty === sortedPlantsToDry.length) {
       this.maturePlants = newMaturePlants;
       plantsToDry.forEach(function(plant) {
-        seedsGathered += plant.seedQty);
+        seedsGathered += plant.seedQty;
       });
       this.addSeeds(plantName, 0, seedsGathered);
     } else {
@@ -86,11 +86,11 @@ export class Basket {
         newMaturePlants.push(plant);
       });
       this.maturePlants = newMaturePlants;
-      exchangeGold(price * qty);
+      this.exchangeGold(price * qty);
       goldEarned = price * qty;
     } else if (qty === sortedPlantsToSell.length) {
       this.maturePlants = newMaturePlants;
-      exchangeGold(price * qty);
+      this.exchangeGold(price * qty);
       goldEarned = price * qty;
     } else {
       //error

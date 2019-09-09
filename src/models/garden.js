@@ -1,6 +1,9 @@
+import {Plant} from './plant.js';
+import {Weed} from './weed.js';
+
 export class Garden {
   constructor(gardenX, gardenY){
-    this.garden = buildGarden(gardenX, gardenY);
+    this.garden = this.buildGarden(gardenX, gardenY);
   }
 
   buildGarden(x,y){
@@ -24,7 +27,7 @@ export class Garden {
     let freeSpaces = [];
     for(let col = 0; col < this.garden.length; col++){
       for(let row = 0; row < this.garden[0].length; row++){
-        if(checkSpaceFree(col, row)){
+        if(this.checkSpaceFree(col, row)){
           freeSpaces.push([col, row]);
         }
       }
@@ -36,7 +39,7 @@ export class Garden {
     let plantedPlants = [];
     for(let col = 0; col < this.garden.length; col++){
       for(let row = 0; row < this.garden[0].length; row++){
-        if(checkSpaceFree(col, row) && this.garden[col][row].type === 'plant'){
+        if(this.checkSpaceFree(col, row) && this.garden[col][row].type === 'plant'){
           plantedPlants.push(this.garden[col][row]);
         }
       }
@@ -51,7 +54,7 @@ export class Garden {
 
 
   addFlora(x, y, flora){
-    if(checkSpaceFree(x, y)){
+    if(this.checkSpaceFree(x, y)){
       this.garden[x][y] = flora;
     }
   }
@@ -71,14 +74,14 @@ export class Garden {
     const nameIndex = Math.floor(Math.random()*names.length);
     const toolIndex = Math.floor(Math.random()*bestTools.length);
 
-    return newWeed(names[nameIndex], level, [bestTools[toolIndex]]);
+    return this.newWeed(names[nameIndex], level, [bestTools[toolIndex]]);
   }
 
   removeWeed(x, y, tool){
     let flora = this.garden[x][y];
     let isWeedRemoved = false;
     if(flora.bestTools && flora.bestTools.includes(tool)){
-      removeFlora(x,y);
+      this.removeFlora(x,y);
       isWeedRemoved = true;
     }
     return isWeedRemoved;
