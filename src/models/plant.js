@@ -4,7 +4,7 @@ export class Plant extends Flora {
   constructor(name, level, toolBonuses){
     super(name, level);
     this.lifeSpan = setLifeSpan();
-    this.wateringCounter = 0;
+    this.wateringCounter = 20;
     this.toolBonuses = toolBonuses;
     this.seedQty = setSeedQty();
   }
@@ -15,5 +15,13 @@ export class Plant extends Flora {
 
   setSeedQty(){
     return Math.floor(Math.random() * this.level);
+  }
+
+  water(){
+    this.wateringCounter+=5;
+  }
+
+  decrementWater(){
+    this.wateringCounter--;
   }
 }

@@ -12,9 +12,9 @@ export class Garden {
     return garden;
   }
 
-  checkSpaceFree(x,y){
+  checkSpaceFree(x, y){
     let available = true;
-    if(x > this.garden.length || y > this.garden[0].length || this.garden[x][y]){
+    if((x > this.garden.length || x < 0) || ((y > this.garden[0].length || y < 0) || this.garden[x][y])){
       available = false;
     }
     return available;
@@ -30,5 +30,21 @@ export class Garden {
       }
     }
     return freeSpaces;
+  }
+
+  addFlora(flora, x, y){
+    if(checkSpaceFree(x, y)){
+      this.garden[x][y] = flora;
+    }
+  }
+
+  removeFlora(x, y, tool){
+    let flora = this.garden[x][y];
+    let isFloraRemoved = false;
+    if(flora.bestTools && flora.bestTools.includes(tool)){
+      this.garden[x][y] = "";
+      isFloraRemoved = true;
+    }
+    return isFloraRemoved;
   }
 }
