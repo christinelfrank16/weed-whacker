@@ -19,31 +19,81 @@ export class Basket {
   }
 
   addPlants(plants) {
-    this.maturePlants = this.maturePlants.concat(plants);
+    this.maturePlants = this.maturePlants.concat([plants]);
   }
 
   addSeeds(seedName, price, qty) {
-    if(price*qty <= this.gold){
+    if (price * qty <= this.gold) {
       if (this.seeds[seedName]) {
-        this.seeds[seedName]+= qty;
+        this.seeds[seedName] += qty;
         exchangeGold(-(price * qty));
-      }else{
-        this.seeds[seedName]= qty;
+      } else {
+        this.seeds[seedName] = qty;
         exchangeGold(-(price * qty));
       }
     }
   }
 
-  sellPlant(plant, price) {
-    this.maturePlants.sort();
-    const plantFirstIndex = this.maturePlants.indexOf(plant);
-    const plantLastIndex = this.maturePlants.lastIndexOf(plant);
-    const indexDelta = plantLastIndex - plantFirstIndex;
-    let goldEarned=0;
-    if (plantIndex !== -1) {
-      this.maturePlants.splice(plantFirstIndex, indexDelta + 1);
-      exchangeGold(price * (indexDelta + 1));
-      goldEarned = price * (indexDelta + 1);
+  dryPlant(plantName, qty) {
+    let seedsGathered = 0;
+    const newMaturePlants = this.maturePlants.filter(plant => {
+      return plant.name !== plantName
+    });
+    const plantsToDry = this.maturePlants.filter(plant => {
+      return plant.name === plantName
+    });
+    let sortedPlantsToDry = plantsToSell.sort((a, b) => {
+      (a.level > b.level) ? 1: ((a.level < b.level) ? -1 : 0)
+    });
+    if (qty < sortedPlantsToDry.length) {
+      const seedPlants = sortedPlantsToDry.slice(0, qty);
+      seedPlants.forEach(function(plant) {
+        seedsGathered += Math.floor(Math.random() * (plant.level + 1));
+      });
+      const leftoverPlants = sortedPlantsToDry.slice(qty);
+      leftoverPlants.forEach(function(plant) {
+        newMaturePlants.push(plant);
+      });
+      this.maturePlants = newMaturePlants;
+      this.addSeeds(plantName, 0, seedsGathered);
+
+    } else if (qty === sortedPlantsToSell.length) {
+      this.maturePlants = newMaturePlants;
+      plantsToDry.forEach(function(plant) {
+        seedsGathered += Math.floor(Math.random() * (plant.level + 1));
+      });
+      this.addSeeds(plantName, 0, seedsGathered);
+    } else {
+      //error
+    }
+    return seedsGathered;
+  }
+
+  sellPlant(plantName, price, qty) {
+    let goldEarned = 0;
+    const newMaturePlants = this.maturePlants.filter(plant => {
+      return plant.name !== plantName
+    });
+    const plantsToSell = this.maturePlants.filter(plant => {
+      return plant.name === plantName
+    });
+    let sortedPlantsToSell = plantsToSell.sort((a, b) => {
+      (a.level > b.level) ? 1: ((a.level < b.level) ? -1 : 0)
+    });
+    if (qty < sortedPlantsToSell.length) {
+      const leftoverPlants = sortedPlantsToSell.slice(qty);
+      leftoverPlants.forEach(function(plant) {
+        newMaturePlants.push(plant);
+      });
+      this.maturePlants = newMaturePlants;
+      exchangeGold(price * qty);
+      goldEarned = price * qty;
+    } else if (qty === sortedPlantsToSell.length) {
+      this.maturePlants = newMaturePlants;
+      exchangeGold(price * qty);
+      goldEarned = price * qty;
+    } else {
+      //error
     }
     return goldEarned;
   }
