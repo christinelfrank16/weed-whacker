@@ -32,19 +32,36 @@ export class Garden {
     return freeSpaces;
   }
 
-  addFlora(flora, x, y){
+  plantFromSeed(seedName){
+    let newPlant = new Plant(seedName, Math.floor((Math.random()*5)+1), ['']);
+    return newPlant;
+  }
+
+
+  addFlora(x, y, flora){
     if(checkSpaceFree(x, y)){
       this.garden[x][y] = flora;
     }
   }
 
-  removeFlora(x, y, tool){
-    let flora = this.garden[x][y];
-    let isFloraRemoved = false;
-    if(flora.bestTools && flora.bestTools.includes(tool)){
+  removeFlora(x, y){
       this.garden[x][y] = "";
-      isFloraRemoved = true;
-    }
-    return isFloraRemoved;
   }
+
+  newWeed(name, level, bestTools){
+    let newWeed = new Weed(name, level, bestTools);
+    return newWeed;
+  }
+
+  removeWeed(x, y, tool){
+    let flora = this.garden[x][y];
+    let isWeedRemoved = false;
+    if(flora.bestTools && flora.bestTools.includes(tool)){
+      removeFlora(x,y);
+      isWeedRemoved = true;
+    }
+    return isWeedRemoved;
+  }
+
+
 }

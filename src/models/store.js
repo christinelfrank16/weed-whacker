@@ -19,5 +19,17 @@ export class Store {
       truffles: 15,
       squareWatermelons: 50
     }
+    this.buyPrices = {
+      tomato: 3,
+      pumpkin: 3,
+      sunflower: 3,
+      carrot: 3,
+      eggplant: 7,
+      zucchini: 7,
+      watermelon: 15,
+      saffron: 20,
+      truffles: 20,
+      squareWatermelons: 70
+    }
   }
 }
