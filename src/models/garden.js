@@ -32,6 +32,18 @@ export class Garden {
     return freeSpaces;
   }
 
+  getAllPlants(){
+    let plantedPlants = [];
+    for(let col = 0; col < this.garden.length; col++){
+      for(let row = 0; row < this.garden[0].length; row++){
+        if(checkSpaceFree(col, row) && this.garden[col][row].type === 'plant'){
+          plantedPlants.push(this.garden[col][row]);
+        }
+      }
+    }
+    return plantedPlants;
+  }
+
   plantFromSeed(seedName){
     let newPlant = new Plant(seedName, Math.floor((Math.random()*5)+1), ['']);
     return newPlant;
@@ -51,6 +63,15 @@ export class Garden {
   newWeed(name, level, bestTools){
     let newWeed = new Weed(name, level, bestTools);
     return newWeed;
+  }
+
+  makeRandomWeed(level){
+    const names = ['dandilion', 'thistle', 'crabgrass', 'wildflowers', 'blackberries', 'poison ivy', 'stinging nettle'];
+    const bestTools = ["shovel", "hoe", "rake", "fertilizer"];
+    const nameIndex = Math.floor(Math.random()*names.length);
+    const toolIndex = Math.floor(Math.random()*bestTools.length);
+
+    return newWeed(names[nameIndex], level, [bestTools[toolIndex]]);
   }
 
   removeWeed(x, y, tool){
