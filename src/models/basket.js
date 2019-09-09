@@ -48,7 +48,7 @@ export class Basket {
     if (qty < sortedPlantsToDry.length) {
       const seedPlants = sortedPlantsToDry.slice(0, qty);
       seedPlants.forEach(function(plant) {
-        seedsGathered += Math.floor(Math.random() * (plant.level + 1));
+        seedsGathered += plant.seedQty);
       });
       const leftoverPlants = sortedPlantsToDry.slice(qty);
       leftoverPlants.forEach(function(plant) {
@@ -60,7 +60,7 @@ export class Basket {
     } else if (qty === sortedPlantsToSell.length) {
       this.maturePlants = newMaturePlants;
       plantsToDry.forEach(function(plant) {
-        seedsGathered += Math.floor(Math.random() * (plant.level + 1));
+        seedsGathered += plant.seedQty);
       });
       this.addSeeds(plantName, 0, seedsGathered);
     } else {
