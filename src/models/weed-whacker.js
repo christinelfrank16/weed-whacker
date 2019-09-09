@@ -52,7 +52,7 @@ export class Game {
   harvestPlant(x, y) {
     const flora = this.garden[x][y];
     if (flora.type === 'plant' && flora.maturity === 4) {
-      this.basket.addPlants(flora.name);
+      this.basket.addPlants(flora);
       removeFlora(x, y);
     }else if (flora.type === 'plant'){
       removeFlora(x, y);
@@ -73,7 +73,11 @@ export class Game {
   buyNewSeeds(seedName, qty){
     const price = this.store.seedPrices[seedName];
     this.basket.addSeeds(seedName, price, qty);
-    return -price;
+    return -(price*qty);
+  }
+
+  dryForSeeds(plantName, qty){
+    return this.basket.dryPlant(plantName, qty);
   }
 
 }
@@ -86,6 +90,3 @@ export class Game {
 // dry for seeds
 
 // use tool
-
-
-// buy new seeds
