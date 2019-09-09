@@ -11,6 +11,8 @@
 // - disasters (thunder, dog dig hole, meteor shower, cow stampede)
 // - randomly generate how many veggies/fruits/herbs you harvest from a plant at a time
 // - supply demand: if sold to store recently, they pay you less per subsequent sell
+// - weeds eat plants that are  in proximity when level delta is high enough
+// - garden dimensions grow after x days have passed successfully
 
 import Plant from './plant.js';
 import Weed from './weed.js';
@@ -20,7 +22,7 @@ import Garden from './garden.js';
 
 export class Game {
   constructor(x, y) {
-    this.garden = new Garden(x, y);
+    this.gardenObj = new Garden(x, y);
     this.basket = new Basket();
     this.store = new Store();
     this.dayLength = 5 * 60 * 1000;
@@ -28,20 +30,20 @@ export class Game {
   }
 
   pullWeed(x, y, tool) {
-    return this.garden.removeWeed(x, y, tool);
+    return this.gardenObj.removeWeed(x, y, tool);
   }
 
   plantSeed(x, y, plantName) {
     if (Object.keys(this.basket.seeds).includes(plantName) && this.basket.seeds[plantName] > 0) {
       this.basket.seeds[plantName]--;
-      const newPlant = this.garden.plantFromSeed(plantName);
-      this.garden.addFlora(x, y, newPlant);
+      const newPlant = this.gardenObj.plantFromSeed(plantName);
+      this.gardenObj.addFlora(x, y, newPlant);
     }
-    return this.garden;
+    return this.gardenObj;
   }
 
   waterPlant(x, y) {
-    const flora = this.garden[x][y];
+    const flora = this.gardenObj.garden[x][y];
     if (flora.type === 'plant') {
       flora.water();
     } else {
@@ -50,7 +52,7 @@ export class Game {
   }
 
   harvestPlant(x, y) {
-    const flora = this.garden[x][y];
+    const flora = this.gardenObj.garden[x][y];
     if (flora.type === 'plant' && flora.maturity === 4) {
       this.basket.addPlants(flora);
       removeFlora(x, y);
@@ -80,13 +82,23 @@ export class Game {
     return this.basket.dryPlant(plantName, qty);
   }
 
+  growWeed(){
+    const plantedPlants = this.gardenObj.getAllPlants();
+    const levels = plantedPlants.map(plant => {return plant.level});
+    const avgLevel = levels.reduce((accumulator, current) => accumulator + current)/levels.length;
+    for(let i = 0; i < avgLevel; i++){
+      const freeSpaces = this.gardenObj.getAllFreeSpaces();
+      const locationIndex = Math.floor(Math.random * freeSpaces.length);
+      const location = freeSpaces[locationIndex];
+      const weedLevel = Math.floor(Math.random()*avgLevel)+2;
+      const weed = this.gardenObj.makeRandomWeed(weedLevel);
+      this.gardenObj.addFlora(location[0], location[1], weed);
+    }
+  }
+
 }
 
 
-
-
-// grow weed & spread weed
-
-// dry for seeds
+// spread weed
 
 // use tool
