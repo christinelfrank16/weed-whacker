@@ -2,7 +2,7 @@ import Flora from './flora.js';
 
 export class Weed extends Flora {
   constructor(name, level, bestTools){
-    super(name, level);
+    super(name, level, 'weed');
     this.spreadRate = setSpreadRate();
     this.proximityRating = setProximityRating();
     this.bestTools = bestTools;

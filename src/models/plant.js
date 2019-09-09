@@ -2,7 +2,7 @@ import Flora from './flora.js';
 
 export class Plant extends Flora {
   constructor(name, level, toolBonuses){
-    super(name, level);
+    super(name, level, 'plant');
     this.lifeSpan = setLifeSpan();
     this.wateringCounter = 20;
     this.toolBonuses = toolBonuses;

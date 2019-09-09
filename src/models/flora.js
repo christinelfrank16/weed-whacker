@@ -1,8 +1,9 @@
 export class Flora {
-  constructor(name, level){
+  constructor(name, level, type){
     this.name = name;
     this.level = level;
-    this.maturity = 0;
+    this.type = type;
+    this.maturity = 1;
     this.growTime = setGrowTime();
   }
 
