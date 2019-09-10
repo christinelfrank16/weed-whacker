@@ -15,6 +15,7 @@
 // - garden dimensions grow after x days have passed successfully
 // - use local weather api to pull in garden weather
 // - weeds grow to maturity, and when mature split in 2, etc
+// - AR board game equivalent (Torch)
 
 
 import {Plant} from './plant.js';
