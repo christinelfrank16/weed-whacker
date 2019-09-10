@@ -14,6 +14,7 @@
 // - weeds eat plants that are  in proximity when level delta is high enough
 // - garden dimensions grow after x days have passed successfully
 // - use local weather api to pull in garden weather
+// - weeds grow to maturity, and when mature split in 2, etc
 
 
 import {Plant} from './plant.js';
@@ -29,6 +30,7 @@ export class Game {
     this.store = new Store();
     this.dayLength = 5 * 60 * 1000;
     this.currentDay = 0;
+    this.previousAction='';
   }
 
   pullWeed(x, y, tool) {
@@ -105,6 +107,47 @@ export class Game {
     }
   }
 
+  setAction(action){
+    let actionValid = false;
+    if(action !== this.previousAction){
+      actionValid = true;
+      this.previousAction = action;
+    }
+    return actionValid;
+  }
+
+
+  nextDay(){
+    this.gardenObj.getAllPlants().forEach(function(plant){
+      if(plant.maturity < 4){
+        plant.decrementWater();
+        plant.grow();
+      }
+    });
+    this.currentDay++;
+    this.growWeed();
+  }
+
+  startDay(){
+    return setInterval(function(){
+      nextDay();
+    }, 300000);
+  }
+
+  clearDay(dayInterval){
+    clearInterval(dayInterval);
+  }
+
+  endGameChecker(){
+    let isEndGame = false;
+    const plants = this.gardenObj.getAllPlants();
+    const livePlants = plants.filter(plant => plant.maturity < 5);
+    const freeSpaces = this.gardenObj.getAllFreeSpaces();
+    if(freeSpaces.length === 0 && livePlants.length === 0){
+      isEndGame = true;
+    }
+    return isEndGame;
+  }
 }
 
 
