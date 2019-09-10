@@ -52,6 +52,18 @@ import {Game} from './../src/models/weed-whacker.js';
 //     gardenObj.garden[1][3] = weed;
 //     expect(pullWeed(1,3,'goat')).toBeTrue();
 //   });
+
+  // it('should kill a plant if the user waits past the life-stage timer of that plant', function(){
+  //   //tbd
+  // });
+  //
+  // it('should allow the user to add fertilizer to a space and increase corresponding plant property', function(){
+  //   //tbd
+  // });
+
+  // it('should grow plants through life stages (seed-seedling-flowering-mature) when watered on time', function(){
+  //   //tbd
+  // });
 // });
 
 describe('plant', function(){
@@ -401,36 +413,19 @@ describe('Basket', function(){
       expect(gardenObj.addFlora(0,0),livePlant).toBe(true);
     });
 
-    it('should reject a seed when selected space is occupied', function(){
-      // const plant = new Plant('carrot',0,[]);
-      // gardenObj.garden[0][1] = weed;
-      // expect(gardenObj.addFlora(0,1),plant).toBe(false);
+    it('.addFlora should reject a seed when selected space is occupied', function(){
+      gardenObj.garden[0][1] = weed;
+      expect(gardenObj.addFlora(0,1), livePlant).toBe(false);
     });
 
-
-    it('should kill a plant if the user waits past the life-stage timer of that plant', function(){
-      //tbd
+    it('.removeWeed should allow user to remove a weed from selected location if user has the correct tool', function(){
+      gardenObj.garden[1][3] = weed;
+      expect(gardenObj.removeWeed(1,3,'goat')).toBe(true);
     });
 
-
-
-    it('should allow the user to add fertilizer to a space and increase corresponding plant property', function(){
-      //tbd
+    it('.removeWeed should prevent user from weeding a selected location if user does not have the correct tool', function(){
+      gardenObj.garden[1][3] = weed;
+      expect(gardenObj.removeWeed(1,3,'lawn mower')).toBe(false);
     });
 
-    it('.pullWeed should allow user to remove a weed from selected location if user has the correct tool', function(){
-      // gardenObj.garden[1][3] = weed;
-      // expect(pullWeed(1,3,'goat')).toBeTrue();
-    });
-
-    it('.pullWeed should prevent user from weeding a selected location if user does not have the correct tool', function(){
-      // gardenObj.garden[1][3] = weed;
-      // expect(pullWeed(1,3,'lawn mower')).toBeFalse();
-
-
-    });
-
-    it('should grow plants through life stages (seed-seedling-flowering-mature) when watered on time', function(){
-      //tbd
-    });
   });
