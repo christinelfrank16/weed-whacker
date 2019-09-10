@@ -13,6 +13,8 @@
 // - supply demand: if sold to store recently, they pay you less per subsequent sell
 // - weeds eat plants that are  in proximity when level delta is high enough
 // - garden dimensions grow after x days have passed successfully
+// - use local weather api to pull in garden weather
+
 
 import {Plant} from './plant.js';
 import {Weed} from './weed.js';

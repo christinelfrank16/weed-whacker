@@ -19,7 +19,11 @@ export class Basket {
   }
 
   addPlants(plants) {
-    this.maturePlants = this.maturePlants.concat([plants]);
+    let array = this.maturePlants.slice(0);
+    plants.forEach(function(plant){
+      array.push(plant);
+    });
+    this.maturePlants = array;
   }
 
   addSeeds(seedName, price, qty) {
