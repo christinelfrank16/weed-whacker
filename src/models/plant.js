@@ -26,11 +26,11 @@ export class Plant extends Flora {
   }
 
   grow(){
-    plant.lifeSpan--;
-    if(this.lifeSpan === 0 && wateringCounter !== 0){
+    this.lifeSpan--;
+    if(this.lifeSpan === 0 && this.wateringCounter !== 0){
       this.maturity++;
-      this.lifeSpan = setLifeSpan();
-    } else if (wateringCounter === 0){
+      this.lifeSpan = this.setLifeSpan();
+    } else if (this.wateringCounter === 0){
       this.maturity === 5;
     }
   }

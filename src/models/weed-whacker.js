@@ -130,7 +130,7 @@ export class Game {
 
   startDay(){
     return setInterval(function(){
-      nextDay();
+      this.nextDay();
     }, 300000);
   }
 
