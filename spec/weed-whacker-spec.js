@@ -6,6 +6,10 @@ import {Garden} from './../src/models/garden.js';
 import {Game} from './../src/models/weed-whacker.js';
 
 // describe('game-play', function(){
+//   let game;
+//   beforeEach(function(){
+//     game = new Game(5,5);
+//   });
 //   it('should initialize a new game with a new garden, and new basket with preset amounts of gold and seeds', function(){
 //
 //   });
@@ -16,6 +20,37 @@ import {Game} from './../src/models/weed-whacker.js';
 //
 //   it('should end a game when all garden spots are filled with dead plants or weeds', function(){
 //
+//   });
+//
+//   it('should require each plant to be watered on a timed interval', function(){
+//
+//   });
+//
+//   it('should grow weeds in random, open garden location based on level', function(){
+//
+//   });
+//
+//   it('should spread weeds to adjacent open garden locations, based on existing weed spread rate', function(){
+//
+//   });
+//
+//   it('should allow user to harvest mature plants and clear garden spot', function(){
+//
+//   });
+//   it('.plantSeed should require the user to clear a dead plant before allowing a seed to be placed in that location', function(){
+//     gardenObj.garden[1][3] = deadPlant;
+//     expect(gardenObj.plantSeed(1,3, 'tomato')).toBeFalse();
+//     expect(gardenObj.removeDeadPlant(1,3)).toBeTrue();
+//     expect(gardenObj.plantSeed(1,3, 'tomato')).toBeTrue();
+//   });
+//
+//   it('.pullWeed should prevent user from weeding a selected location if user does not have the correct tool', function(){
+//     gardenObj.garden[1][3] = weed;
+//     expect(pullWeed(1,3,'lawn mower')).toBeFalse();
+//   });
+//   it('.pullWeed should allow user to remove a weed from selected location if user has the correct tool', function(){
+//     gardenObj.garden[1][3] = weed;
+//     expect(pullWeed(1,3,'goat')).toBeTrue();
 //   });
 // });
 
@@ -124,7 +159,7 @@ describe('store', function(){
     expect(store.buyPrices.saffron).toEqual(20);
     expect(store.buyPrices.truffles).toEqual(20);
     expect(store.buyPrices.squareWatermelons).toEqual(70);
-    
+
   });
 });
 
@@ -211,16 +246,23 @@ describe('Basket', function(){
 
   describe('garden', function(){
     let gardenObj;
+    let weed;
+    let deadPlant;
+    let livePlant;
     beforeEach(function(){
       gardenObj = new Garden(4,4);
+      weed = new Weed('blackberry bush',5,['goat']);
+      livePlant = new Plant('carrot',0,['fertilizer']);
+      deadPlant = new Plant('tomato',5,[]);
+      deadPlant.maturity =5;
     });
 
-    it('should be the correct type', function(){
+    it('.constructor should be the correct type', function(){
       expect(gardenObj).toBeDefined();
       expect(gardenObj).toEqual(jasmine.any(Garden));
     });
 
-    it('should start empty for each new game', function(){
+    it('.constructor should start empty for each new game', function(){
       expect(gardenObj.garden).toEqual(jasmine.any(Array));
       expect(gardenObj.garden.length).toEqual(4);
       expect(gardenObj.garden[0]).toEqual(jasmine.any(Array));
@@ -232,51 +274,159 @@ describe('Basket', function(){
       });
     });
 
-    it('should confirm when a space is available', function(){
-      const plant = new Plant('carrot',0,[]);
+    it('.checkSpaceFree should check when a space is available', function(){
+      gardenObj.garden[0][1] = livePlant;
+      expect(gardenObj.checkSpaceFree(0,0)).toBe(true);
+      expect(gardenObj.checkSpaceFree(0,1)).toBe(false);
     });
 
-    it('should allow user to plant a seed when selected space is empty', function(){
+    it('.getAllFreeSpaces should provide array of free garden spots (coordinates)', function(){
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.any(Array));
+      expect(gardenObj.getAllFreeSpaces().length).toEqual(16);
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        0: [0,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        1: [0,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        2: [0,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        3: [0,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        4: [1,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        5: [1,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        6: [1,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        7: [1,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        8: [2,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        9: [2,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        10: [2,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        11: [2,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        12: [3,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        13: [3,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        14: [3,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        15: [3,3]
+      }));
 
+      gardenObj.garden[0][1] = livePlant;
+
+      expect(gardenObj.getAllFreeSpaces().length).toEqual(15);
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        0: [0,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        1: [0,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        2: [0,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        3: [1,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        4: [1,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        5: [1,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        6: [1,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        7: [2,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        8: [2,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        9: [2,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        10: [2,3]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        11: [3,0]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        12: [3,1]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        13: [3,2]
+      }));
+      expect(gardenObj.getAllFreeSpaces()).toEqual(jasmine.objectContaining({
+        14: [3,3]
+      }));
+    });
+
+    it('.getAllPlants() should provide array of planted plants', function(){
+      expect(gardenObj.getAllPlants()).toEqual(jasmine.any(Array));
+      expect(gardenObj.getAllPlants().length).toEqual(0);
+      gardenObj.garden[0][1] = livePlant;
+      expect(gardenObj.getAllPlants().length).toEqual(1);
+      expect(gardenObj.getAllPlants()[0]).toEqual(jasmine.objectContaining({
+        name: "carrot",
+        level: 0,
+        toolBonuses: ['fertilizer']
+      }));
+    });
+
+
+    it('.addFlora should allow user to plant a seed when selected space is empty', function(){
+
+      gardenObj.garden[0][1] = weed;
+      expect(gardenObj.addFlora(0,0),livePlant).toBe(true);
     });
 
     it('should reject a seed when selected space is occupied', function(){
-
+      // const plant = new Plant('carrot',0,[]);
+      // gardenObj.garden[0][1] = weed;
+      // expect(gardenObj.addFlora(0,1),plant).toBe(false);
     });
 
-    it('should require each plant to be watered on a timed interval', function(){
-
-    });
-
-    it('should grow weeds in random, open garden location based on level', function(){
-
-    });
-
-    it('should spread weeds to adjacent open garden locations, based on existing weed spread rate', function(){
-
-    });
-
-    it('should allow user to harvest mature plants and put them in their basket', function(){
-
-    });
 
     it('should kill a plant if the user waits past the life-stage timer of that plant', function(){
-
+      //tbd
     });
 
-    it('should require the user to clear a dead plant before allowing a seed to be placed in that location', function(){
 
-    });
 
     it('should allow the user to add fertilizer to a space and increase corresponding plant property', function(){
-
+      //tbd
     });
 
-    it('should allow user to remove a weed from selected location if user has the correct tool', function(){
-
+    it('.pullWeed should allow user to remove a weed from selected location if user has the correct tool', function(){
+      // gardenObj.garden[1][3] = weed;
+      // expect(pullWeed(1,3,'goat')).toBeTrue();
     });
 
-    it('should prevent user from weeding a selected location if user does not have the correct tool', function(){
+    it('.pullWeed should prevent user from weeding a selected location if user does not have the correct tool', function(){
+      // gardenObj.garden[1][3] = weed;
+      // expect(pullWeed(1,3,'lawn mower')).toBeFalse();
+
 
     });
 

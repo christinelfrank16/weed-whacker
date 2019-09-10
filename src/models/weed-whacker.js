@@ -68,6 +68,13 @@ export class Game {
     return this.basket.sellPlant(plantName, price);
   }
 
+  removeDeadPlant(x,y){
+    let returnStatment = false;
+    if(this.gardenObj.garden[x][y].type === 'plant' && this.gardenObj.garden[x][y].maturity === 5 ){
+      returnStatment = this.gardenObj.garden.removeFlora(x,y);
+    }
+    return returnStatment;
+  }
   buyNewTool(toolName){
     const price = this.store.toolPrices[toolName];
     this.basket.addTool(toolName,price);

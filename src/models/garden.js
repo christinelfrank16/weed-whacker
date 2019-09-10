@@ -28,7 +28,8 @@ export class Garden {
     for(let col = 0; col < this.garden.length; col++){
       for(let row = 0; row < this.garden[0].length; row++){
         if(this.checkSpaceFree(col, row)){
-          freeSpaces.push([col, row]);
+          const array = [col,row];
+          freeSpaces.push(array);
         }
       }
     }
@@ -39,7 +40,7 @@ export class Garden {
     let plantedPlants = [];
     for(let col = 0; col < this.garden.length; col++){
       for(let row = 0; row < this.garden[0].length; row++){
-        if(this.checkSpaceFree(col, row) && this.garden[col][row].type === 'plant'){
+        if(!this.checkSpaceFree(col, row) && this.garden[col][row].type === 'plant'){
           plantedPlants.push(this.garden[col][row]);
         }
       }
@@ -54,13 +55,17 @@ export class Garden {
 
 
   addFlora(x, y, flora){
+    let isFloraAdded = false;
     if(this.checkSpaceFree(x, y)){
       this.garden[x][y] = flora;
+      isFloraAdded = true;
     }
+    return isFloraAdded;
   }
 
   removeFlora(x, y){
       this.garden[x][y] = "";
+      return (this.garden[x][y] === "" ? true : false);
   }
 
   newWeed(name, level, bestTools){
