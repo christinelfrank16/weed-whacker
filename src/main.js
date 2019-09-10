@@ -1,6 +1,9 @@
 import $ from 'jquery';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css';
 import basketImg from './images/basket';
-// import {plantArraytoHTML} from './src/views/garden-view';
+import {plantArraytoHTML} from './views/garden-view';
 import {displayBasket} from './views/basket-view';
 import emoji from 'node-emoji';
 import {Plant} from './models/plant.js';
@@ -33,12 +36,13 @@ garden.garden[0][0]=plant1;
 garden.garden[0][3]=plant2;
 garden.garden[2][2]=weed1;
 garden.garden[3][4]=deadPlant;
+garden.garden[4][4]=weed2;
 const basketObj = new Basket();
 basketObj.maturePlants.push(plant1);
 
 $(document).ready(function(){
   $('#bskt').attr("src", basketImg);
-  // $('#garden').html(plantArraytoHTML(garden));
+  $('#garden').html(plantArraytoHTML(garden.garden));
   $('#basket').html(displayBasket(basketObj, emojis));
   // $('body').html("<img src='https://media.giphy.com/media/xT5LMWxAjHP2kHrNN6/giphy.gif'>");
 });
